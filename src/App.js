@@ -5,18 +5,20 @@ import Header from './components/header'
 import Routes from './routes';
 import AuthContextProvider from './contexts/authContext';
 import ProductContextProvider from './contexts/productContext';
-
+import ClientContextProvider from './contexts/clientContext';
 function App() {
-  return (
-    <AuthContextProvider>
-      <ProductContextProvider>
-        <Router>
-          <Header />
-          <Routes />
-        </Router>
-      </ProductContextProvider>
-    </AuthContextProvider>
-  );
+    return (
+        <AuthContextProvider>
+            <ClientContextProvider>
+                <ProductContextProvider>
+                    <Router>
+                        <Header />
+                        <Routes />
+                    </Router>
+                </ProductContextProvider>
+            </ClientContextProvider>
+        </AuthContextProvider >
+    );
 }
 
 export default App;

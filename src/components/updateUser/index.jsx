@@ -1,10 +1,15 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import ALert from '../alert';
-import { save } from '../../services/User';
+import { getClient, update } from '../../services/User';
 import { AuthContext } from '../../contexts/authContext';
 import Loading from '../loading';
-const Register = () => {
+import { updateUserInLocalStorage } from '../../utils/helper';
+import { useParams } from 'react-router-dom';
+//isMe checks if this component called by account component or a user/Client updatecompoenent
+const UpdateUser = ({ isMe }) => {
+	let { id } = useParams();
+	console.log('PRODUCT PARAM', id);
 	const { isAuth } = useContext(AuthContext);
 	const [validated, setValidated] = useState(false);
 	const [showErr, setShowErr] = useState(false);
@@ -12,7 +17,25 @@ const Register = () => {
 	const [showSucces, setShowSucces] = useState(false);
 	const [message, setMessage] = useState([]);
 	const [user, setUser] = useState({});
+	console.log('IS AUUUUTH', isAuth);
+	useEffect(() => {
+		(async () => {
+			const { err, result } = await getClient(id);
+			console.log('insiiide user', err);
 
+			if (err) {
+				setShowErr(true);
+				setErrors(['no user with Spicified ID']);
+				return;
+			}
+			if (result) {
+				setShowErr(false);
+				setUser(result.apiResponse.data);
+				console.log('user result', user);
+				return;
+			}
+		})();
+	}, []);
 	const handleSubmit = async (event) => {
 		const form = event.currentTarget;
 		event.preventDefault();
@@ -20,24 +43,20 @@ const Register = () => {
 		//chikking the validity of the Register Form
 		if (!form.checkValidity()) return setValidated(true);
 
-		const { err, result } = await save(user);
+		const { err, result } = await update(id, user);
 		if (err) {
 			console.log(err);
 			setShowErr(true);
-			let data = err.apiResponse?.response
-				? err.apiResponse?.response?.data
-				: 'Faild To Connect-Try again later';
-			setErrors(data.split('-'));
-			return;
+			let data =
+				err.apiResponse.response.data ??
+				'Faild To Connect-Try again later';
+			if (Array.isArray(data)) return setErrors(data.split('-'));
+			return setErrors([data]);
 		} else if (result) {
 			console.log(result);
 			setShowSucces(true);
 			setShowErr(false);
-
-			setMessage([
-				'User registred.',
-				'Go login now with your new account.',
-			]);
+			setMessage(['User Updated.']);
 		}
 	};
 	const handleChange = (e) => {
@@ -47,8 +66,6 @@ const Register = () => {
 	return (
 		<div>
 			{isAuth ? (
-				<Loading to='login' />
-			) : (
 				<Container className='mx-auto' style={{ width: '500px' }}>
 					<Card className='mt-4'>
 						<ALert
@@ -64,13 +81,27 @@ const Register = () => {
 							close={() => setShowSucces(false)}
 						/>
 
-						<Card.Header>Register</Card.Header>
+						<Card.Header> Register</Card.Header>
 						<Card.Body>
 							<Form
 								noValidate
 								validated={validated}
 								onSubmit={handleSubmit}
 							>
+								<Form.Group controlId='validationCustom05'>
+									<Form.Label>Username</Form.Label>
+									<Form.Control
+										value={user.username}
+										type='text'
+										placeholder='username'
+										required
+										name='username'
+										onChange={handleChange}
+									/>
+									<Form.Control.Feedback type='invalid'>
+										Please provide a valid Phone.
+									</Form.Control.Feedback>
+								</Form.Group>
 								<Form.Group controlId='validationCustom01'>
 									<Form.Label>First name</Form.Label>
 									<Form.Control
@@ -117,7 +148,6 @@ const Register = () => {
 								<Form.Group controlId='validationCustom04'>
 									<Form.Label>Password</Form.Label>
 									<Form.Control
-										value={user.pass}
 										type='password'
 										placeholder='Password'
 										required
@@ -129,11 +159,11 @@ const Register = () => {
 									</Form.Control.Feedback>
 								</Form.Group>
 								<Form.Group controlId='validationCustom05'>
-									<Form.Label>Tel</Form.Label>
+									<Form.Label>Tele</Form.Label>
 									<Form.Control
 										value={user.tel}
 										type='text'
-										placeholder='Tel'
+										placeholder='Tele'
 										required
 										name='tel'
 										onChange={handleChange}
@@ -142,6 +172,21 @@ const Register = () => {
 										Please provide a valid Phone.
 									</Form.Control.Feedback>
 								</Form.Group>
+								<Form.Group controlId='validationCustom05'>
+									<Form.Label>Role</Form.Label>
+									<Form.Control
+										value={user.role}
+										type='text'
+										placeholder='Tel'
+										required
+										name='role'
+										onChange={handleChange}
+									/>
+									<Form.Control.Feedback type='invalid'>
+										Please provide a valid Phone.
+									</Form.Control.Feedback>
+								</Form.Group>
+
 								<Card.Footer>
 									<Button
 										variant='outline-success'
@@ -162,9 +207,11 @@ const Register = () => {
 						</Card.Body>
 					</Card>
 				</Container>
+			) : (
+				<Loading to='/login' />
 			)}
 		</div>
 	);
 };
 
-export default Register;
+export default UpdateUser;

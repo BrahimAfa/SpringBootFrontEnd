@@ -1,21 +1,11 @@
-import React, { useContext } from 'react';
-import Homecontent from '../components/homeContent'
-import { AuthContext } from '../contexts/authContext'
-import Loading from '../components/loading';
+import React from 'react';
+import Homecontent from '../components/homeContent';
 const Home = () => {
-    const { isAuth } = useContext(AuthContext)
-    return (
-
-        <div className="">
-            {
-                isAuth ?
-                    <Loading to="catalogue" />
-                    :
-                    <Homecontent />
-            }
-        </div>
-
-    );
-}
+	return (
+		<div className=''>
+			<Homecontent />
+		</div>
+	);
+};
 
 export default Home;

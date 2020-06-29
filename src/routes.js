@@ -7,8 +7,11 @@ import ProductList from './components/productLits';
 import AddProduct from './components/addPoduct';
 import ProductControll from './components/adminPanel';
 import UpdateProduct from './components/updateProduct';
-import Authorize from './components/AuthorizeAdmin';
-import NotFoud from './components/403';
+import NotFoud from './components/404';
+import ProductChart from './components/Chart';
+import ClientControler from './components/Clients';
+import Account from './components/Acocunt';
+import UpdateUser from './components/updateUser';
 
 const Routes = () => {
     return (
@@ -18,8 +21,12 @@ const Routes = () => {
             <Route path='/login' exact component={LoginComp} />
             <Route path='/catalogue' exact component={ProductList} />
             <Route path='/products' exact component={ProductControll} />
+            <Route path='/users' exact component={ClientControler} />
             <Route path='/product/add' exact component={AddProduct} />
             <Route path='/product/update/:id' exact component={UpdateProduct} />
+            <Route path='/user/update/:id' exact component={UpdateUser} />
+            <Route path='/account' exact component={Account} />
+            <Route path='/chart' exact component={ProductChart} />
             <Route path='*' component={NotFoud} />
         </Switch>
     )

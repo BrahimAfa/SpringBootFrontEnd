@@ -1,11 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { save } from '../../services/product'
-import { AuthContext } from '../../contexts/authContext';
-import Loading from '../loading';
 import ProductForm from '../ProductForm';
+import Authorize from '../AuthorizeAdmin';
 const AddProduct = () => {
-
-    const { isAuth } = useContext(AuthContext)
     const [validated, setValidated] = useState(false);
     const [showErr, setShowErr] = useState(false);
     const [errors, setErrors] = useState([]);
@@ -48,22 +45,20 @@ const AddProduct = () => {
     }
     return (
         <div>
-            {
-                !isAuth ? <Loading to='/catalogue' /> :
-                    // { handleChange, product, showSucces, showErr, errorMessage, succesMessage }
-                    <ProductForm
-                        handleSubmit={handleSubmit}
-                        validated={validated}
-                        product={product}
-                        handleChange={handleChange}
-                        showSucces={showSucces}
-                        setShowSucces={setShowSucces}
-                        setShowErr={setShowErr}
-                        showErr={showErr}
-                        errorMessage={errors}
-                        succesMessage={message}
-                    />
-            }
+            <Authorize beRole="ADMIN">
+                <ProductForm
+                    handleSubmit={handleSubmit}
+                    validated={validated}
+                    product={product}
+                    handleChange={handleChange}
+                    showSucces={showSucces}
+                    setShowSucces={setShowSucces}
+                    setShowErr={setShowErr}
+                    showErr={showErr}
+                    errorMessage={errors}
+                    succesMessage={message}
+                />
+            </Authorize>
         </div >
 
     );

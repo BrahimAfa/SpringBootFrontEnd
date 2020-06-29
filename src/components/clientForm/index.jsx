@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import ALert from '../alert'
-const ProductForm = ({ handleChange, handleSubmit, product, showSucces, validated, showErr, setShowErr, setShowSucces, errorMessage, succesMessage }) => {
+const ClientForm = ({ handleChange, handleSubmit, client, showSucces, validated, showErr, setShowErr, setShowSucces, errorMessage, succesMessage }) => {
 
     return (
         <Container className="mx-auto" style={{ width: "500px" }} >
@@ -11,67 +11,67 @@ const ProductForm = ({ handleChange, handleSubmit, product, showSucces, validate
                 <ALert message={errorMessage} variant="danger" show={showErr} close={() => setShowErr(false)} />
                 <ALert message={succesMessage} variant="success" show={showSucces} close={() => setShowSucces(false)} />
 
-                <Card.Header>Add New Product : </Card.Header>
+                <Card.Header>Add New Client : </Card.Header>
                 <Card.Body>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Group controlId="validationCustom01">
-                            <Form.Label>Name</Form.Label>
+                            <Form.Label>First Name</Form.Label>
                             <Form.Control
-                                value={product.name}
+                                value={client.fname}
                                 required
                                 type="text"
-                                placeholder="Name"
-                                name='name'
+                                placeholder="lirst name"
+                                name='fname'
                                 onChange={handleChange}
                             />
                             <Form.Control.Feedback type="invalid">not valid!</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="validationCustom02">
-                            <Form.Label>Description</Form.Label>
+                            <Form.Label>Last Name</Form.Label>
                             <Form.Control
-                                as="textarea"
-                                value={product.description}
+                                type='text'
+                                value={client.lname}
                                 required
-                                placeholder="Description"
-                                name="description"
+                                placeholder="last name"
+                                name="lname"
                                 onChange={handleChange}
                             />
                             <Form.Control.Feedback type="invalid">not valid!</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="validationCustomUsername">
-                            <Form.Label>Price</Form.Label>
+                            <Form.Label>Email</Form.Label>
                             <Form.Control
-                                value={product.price}
+                                value={client.email}
                                 type="text"
-                                placeholder="price"
+                                placeholder="email"
                                 aria-describedby="inputGroupPrepend"
                                 required
-                                name="price"
+                                name="email"
                                 onChange={handleChange}
                             />
                             <Form.Control.Feedback type="invalid">
-                                Enter a valid Price.
+                                Enter a valid email.
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="validationCustom04">
-                            <Form.Label>Quantity</Form.Label>
+                            <Form.Label>Tele</Form.Label>
                             <Form.Control
-                                value={product.qte}
+                                value={client.tele}
                                 type="text"
-                                placeholder="Quantity"
+                                placeholder="tele"
                                 required
-                                name="qte"
+                                name="tel"
                                 onChange={handleChange}
                             />
                             <Form.Control.Feedback type="invalid">
-                                Please provide a valid Quantity.
-                                        </Form.Control.Feedback>
+                                Please provide a valid Tele.
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="formGridState">
                             <Form.Label>Category</Form.Label>
-                            <Form.Control name="category" as="select" onChange={handleChange} custom>
-                                <option value="3">cate1</option>
-                                <option value="4">TESTC2</option>
+                            <Form.Control name="role" as="select" onChange={handleChange} custom>
+                                <option value="3">CLIENT</option>
+                                <option value="4">ADMIN</option>
                             </Form.Control>
                         </Form.Group>
                         <Card.Footer>
@@ -85,4 +85,4 @@ const ProductForm = ({ handleChange, handleSubmit, product, showSucces, validate
     );
 }
 
-export default ProductForm
+export default ClientForm
